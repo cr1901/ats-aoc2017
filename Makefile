@@ -21,8 +21,9 @@ ATSOPT=$(ATSHOMEQ)/bin/patsopt
 #
 # HX: Please uncomment the one you want, or skip it entirely
 #
-ATSCCFLAGS=
+ATSCCFLAGS=-DATS_MEMALLOC_LIBC
 # ATSCCFLAGS=-O2
+ATSCCLIBS=-latslib
 #
 # '-flto' enables link-time optimization such as inlining lib functions
 #
@@ -44,7 +45,7 @@ all: $(bin)
 # with the name of the file you want to compile
 #
 %: %_dats.o ; \
-   $(ATSCC) $(ATSCCFLAGS) -o $@ $< || echo $@ ": ERROR!!!"
+   $(ATSCC) $(ATSCCFLAGS) -o $@ $< $(ATSCCLIBS) || echo $@ ": ERROR!!!"
 #
 ######
 #
