@@ -5,7 +5,7 @@ staload "libats/libc/SATS/stdio.sats"
 
 //#include ""
 
-fun calc_captcha (fp: FILEptr0): int =
+fun calc_captcha (fp: !FILEptr0 (r())): int =
 (
     (* let first_chr = fread(fp) in
         let fun do_loop (fp : FILEptr0, curr, sum: int) : int and
@@ -31,6 +31,8 @@ implement main0 (argc, argv) =
 (
     if argc != 2 then
         print "Need to supply input file.\n"
-    (* else let val fp = fopen(argv[0], "r") in
-         calc_captcha(fp) *)
+    else
+        let val fp = fopen(argv[0], file_mode_r) in
+            val _ = calc_captcha(fp)
+        end
 )
