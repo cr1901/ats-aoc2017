@@ -15,15 +15,24 @@ staload "prelude/SATS/integer.sats"
 fun calc_captcha (fr: !FILEref): int =
 (
     let val first_chr : int = fgetc(fr)
-        val _ = print!(first_chr)
+        val _ = print!(first_chr, "\n")
     in
-        0
-    end
-        (* let fun do_loop (fp : FILEptr0, curr, sum: int) : int and
-        val curr = fread(fp) and
-
+        let fun do_loop (fr : !FILEref, curr: int, sum: int, cnt: int) : int =
+            let val next = fgetc(fr)
+                val new_cnt = cnt - 1
+            in
+                if next >= 0 && cnt > 0 then
+                    (
+                        print!(next, "\n");
+                        do_loop(fr, next, 0, new_cnt)
+                    )
+                else
+                    0
+            end
         in
-            do_loop() *)
+            do_loop(fr, first_chr, 0, 2)
+        end
+    end
 )
 
 
