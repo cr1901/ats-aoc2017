@@ -50,7 +50,7 @@ implement main0 (argc, argv) =
     if argc != 2 then
         print "Need to supply input file.\n"
     else
-        let val fp = fopen_exn(argv[0], file_mode_r)
+        let val fp = fopen_exn(argv[1], file_mode_r)
             val fr = FILEptr_refize(fp)
             val _ = calc_captcha(fr)
             (* TODO: These do not work. Check the error codes and figure out why.
