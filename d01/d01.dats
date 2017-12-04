@@ -1,16 +1,9 @@
 #include "share/atspre_define.hats"
 #include "share/atspre_staload.hats"
-//#include "libats/libc/DATS/stdio.dats"
-
-//%{^
-//#include "libats/libc/CATS/stdio.cats"
-//%}
 
 staload "libats/libc/SATS/stdio.sats"
 staload "prelude/SATS/integer.sats"
 
-
-//#include ""
 
 fun next_sum
     (curr_num: int, next_num: int, sum: int): int =
@@ -24,11 +17,11 @@ fun next_sum
 
 fun calc_captcha (fr: !FILEref): int =
 (
-    let val first_chr : int = fgetc(fr)
+    let val first_chr : int = fgetc(fr) - 0x30
         //val _ = print!(first_chr, "\n")
     in
         let fun do_loop (fr : !FILEref, curr: int, sum: int) : int =
-            let val next = fgetc(fr)
+            let val next = fgetc(fr) - 0x30
             in
                 if next >= 0 then
                     (
@@ -53,14 +46,8 @@ implement main0 (argc, argv) =
         let val fp = fopen_exn(argv[1], file_mode_r)
             val fr = FILEptr_refize(fp)
             val res = calc_captcha(fr)
-            (* TODO: These do not work. Check the error codes and figure out why.
-            val _ = fclose0(fp)
-            val _ = fclose1(fp)
-            *)
             val _ = fclose0(fr)
         in
-            (
-                print!(res, "\n")
-            )
+            print!(res, "\n")
         end
 )
