@@ -2,32 +2,24 @@
 #include "share/atspre_staload.hats"
 
 staload "libats/libc/SATS/stdio.sats"
-staload "prelude/SATS/integer.sats"
 
 
-fun next_sum
-    (curr_num: int, next_num: int, sum: int): int =
-(
+val ascii_bias = 0x30
+
+
+fun next_sum (curr_num: int, next_num: int, sum: int): int =
     if curr_num = next_num then
         sum + next_num
     else
         sum
-)
 
 
 fun calc_captcha (fr: !FILEref): int =
-(
-    let val first_chr : int = fgetc(fr) - 0x30
-        //val _ = print!(first_chr, "\n")
-    in
+    let val first_chr : int = fgetc(fr) - ascii_bias in
         let fun do_loop (fr : !FILEref, curr: int, sum: int) : int =
-            let val next = fgetc(fr) - 0x30
-            in
+            let val next = fgetc(fr) - ascii_bias in
                 if next >= 0 then
-                    (
-                        //print!(next, "\n");
-                        do_loop(fr, next, next_sum(curr, next, sum))
-                    )
+                    do_loop(fr, next, next_sum(curr, next, sum))
                 else
                     next_sum(curr, first_chr, sum)
             end
@@ -35,11 +27,9 @@ fun calc_captcha (fr: !FILEref): int =
             do_loop(fr, first_chr, 0)
         end
     end
-)
 
 
 implement main0 (argc, argv) =
-(
     if argc != 2 then
         print "Need to supply input file.\n"
     else
@@ -50,4 +40,3 @@ implement main0 (argc, argv) =
         in
             print!(res, "\n")
         end
-)
