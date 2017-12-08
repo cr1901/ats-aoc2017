@@ -10,11 +10,13 @@
 ######
 #
 ATSHOMEQ=/usr/local
+POSTATSQ=/home/William/src/PostiATS-Utilities
 #
 ######
 #
 ATSCC=$(ATSHOMEQ)/bin/patscc
 ATSOPT=$(ATSHOMEQ)/bin/patsopt
+ATSFILTER=$(POSTATSQ)/pats-filter
 #
 ######
 #
@@ -45,14 +47,14 @@ all: $(bin)
 # with the name of the file you want to compile
 #
 %: %_dats.o ; \
-   $(ATSCC) $(ATSCCFLAGS) -o $@ $< $(ATSCCLIBS) || echo $@ ": ERROR!!!"
+   $(ATSCC) $(ATSCCFLAGS) -o $@ $< $(ATSCCLIBS) |& $(ATSFILTER)
 #
 ######
 #
 # You may find these rules useful
 #
-%_sats.o: %.sats ; $(ATSCC) $(ATSCCFLAGS) -cleanaft -o $@ -c $< || echo $@ ": ERROR!!!"
-%_dats.o: %.dats ; $(ATSCC) $(ATSCCFLAGS) -cleanaft -o $@ -c $< || echo $@ ": ERROR!!!"
+%_sats.o: %.sats ; $(ATSCC) $(ATSCCFLAGS) -cleanaft -o $@ -c $< |& $(ATSFILTER)
+%_dats.o: %.dats ; $(ATSCC) $(ATSCCFLAGS) -cleanaft -o $@ -c $< |& $(ATSFILTER)
 #
 ######
 #
